@@ -26,6 +26,7 @@ export const App: React.FC = () => {
         setVisibleTodos(data);
       })
       .catch(error => {
+        // eslint-disable-next-line no-console
         console.error('Error fetching todos:', error);
       })
       .finally(() => setLoading(false));
