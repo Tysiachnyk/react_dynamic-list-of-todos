@@ -8,13 +8,11 @@ import cn from 'classnames';
 type Props = {
   selectedTodo: Todo | null;
   onClickHideModal: () => void;
-  setIsTodoSelected: (isSelected: boolean) => void;
 };
 
 export const TodoModal: React.FC<Props> = ({
   selectedTodo,
   onClickHideModal,
-  setIsTodoSelected,
 }) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -23,7 +21,6 @@ export const TodoModal: React.FC<Props> = ({
     getUser(selectedTodo?.userId ?? 0)
       .then(setSelectedUser)
       .catch(error => {
-        // eslint-disable-next-line no-console
         console.error('Error fetching user:', error);
       })
       .finally(() => setLoading(false));
@@ -50,10 +47,7 @@ export const TodoModal: React.FC<Props> = ({
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => {
-                onClickHideModal();
-                setIsTodoSelected(false);
-              }}
+              onClick={onClickHideModal}
             />
           </header>
 
@@ -62,7 +56,6 @@ export const TodoModal: React.FC<Props> = ({
               {selectedTodo?.title}
             </p>
             <p className="block" data-cy="modal-user">
-              {/* <strong className="has-text-success">Done</strong> */}
               <strong
                 className={cn({
                   'has-text-success': selectedTodo?.completed,

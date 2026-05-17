@@ -17,7 +17,7 @@ export const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
-  const [isTodoSelected, setIsTodoSelected] = useState(false);
+  const [selectedTodoId, setSelectedTodoId] = useState<number | null>(null);
 
   useEffect(() => {
     getTodos()
@@ -26,7 +26,6 @@ export const App: React.FC = () => {
         setVisibleTodos(data);
       })
       .catch(error => {
-        // eslint-disable-next-line no-console
         console.error('Error fetching todos:', error);
       })
       .finally(() => setLoading(false));
@@ -51,8 +50,8 @@ export const App: React.FC = () => {
                   todos={visibleTodos}
                   onClickShowModal={() => setShowModal(true)}
                   setSelectedTodo={setSelectedTodo}
-                  isTodoSelected={isTodoSelected}
-                  setIsTodoSelected={setIsTodoSelected}
+                  selectedTodoId={selectedTodoId}
+                  setSelectedTodoId={setSelectedTodoId}
                 />
               )}
             </div>
@@ -62,8 +61,10 @@ export const App: React.FC = () => {
       {showModal && (
         <TodoModal
           selectedTodo={selectedTodo}
-          onClickHideModal={() => setShowModal(false)}
-          setIsTodoSelected={setIsTodoSelected}
+          onClickHideModal={() => {
+            setShowModal(false);
+            setSelectedTodoId(null);
+          }}
         />
       )}
     </>

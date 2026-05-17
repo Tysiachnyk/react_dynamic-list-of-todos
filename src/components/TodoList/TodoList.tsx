@@ -1,3 +1,4 @@
+import React from 'react';
 import { Todo } from '../../types/Todo';
 import cn from 'classnames';
 
@@ -5,16 +6,16 @@ type Props = {
   todos: Todo[];
   onClickShowModal: () => void;
   setSelectedTodo: (todo: Todo) => void;
-  isTodoSelected: boolean;
-  setIsTodoSelected: (isSelected: boolean) => void;
+  selectedTodoId: number | null;
+  setSelectedTodoId: (id: number | null) => void;
 };
 
 export const TodoList: React.FC<Props> = ({
   todos,
   onClickShowModal,
   setSelectedTodo,
-  isTodoSelected,
-  setIsTodoSelected,
+  selectedTodoId,
+  setSelectedTodoId,
 }) => {
   return (
     <table className="table is-narrow is-fullwidth">
@@ -33,8 +34,8 @@ export const TodoList: React.FC<Props> = ({
 
       <tbody>
         {todos.map((todo: Todo) => (
-          <>
-            <tr key={todo.id} data-cy="todo" className="">
+          <React.Fragment key={todo.id}>
+            <tr data-cy="todo">
               <td className="is-vcentered">{todo.id}</td>
               <td className="is-vcentered">
                 {todo.completed && (
@@ -61,21 +62,21 @@ export const TodoList: React.FC<Props> = ({
                   onClick={() => {
                     onClickShowModal();
                     setSelectedTodo(todo);
-                    setIsTodoSelected(true);
+                    setSelectedTodoId(todo.id);
                   }}
                 >
                   <span className="icon">
                     <i
                       className={cn('far', {
-                        'fa-eye': !isTodoSelected,
-                        'fa-eye-slash': isTodoSelected,
+                        'fa-eye': selectedTodoId !== todo.id,
+                        'fa-eye-slash': selectedTodoId === todo.id,
                       })}
                     />
                   </span>
                 </button>
               </td>
             </tr>
-          </>
+          </React.Fragment>
         ))}
       </tbody>
     </table>
